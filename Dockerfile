@@ -1,5 +1,7 @@
 # This Dockerfile configures a Docker environment that
 # contains all the required packages for the tool
+# docker run -it -v /scratch/bm920/newmase/04052025/mase:/workspace localhost/mase /bin/bash
+
 FROM ubuntu:22.04
 
 USER root
@@ -8,6 +10,8 @@ RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
 
 # Install basic packages
 RUN apt-get upgrade -y
+RUN apt-get install -y x11-apps xauth
+
 RUN apt-get update -y \
     && apt-get install -y clang graphviz-dev libclang-dev \
                           pkg-config g++ libxtst6 xdg-utils \
@@ -16,14 +20,14 @@ RUN apt-get update -y \
                           libssl-dev git vim wget htop sudo \
                           lld parallel clang-format clang-tidy \
                           libtinfo5 libidn11-dev \
-                          locales python3-sphinx graphviz
+                          locales python3-sphinx graphviz gtkwave
 
 RUN locale-gen en_US.UTF-8
-
+# wget https://github.com/chipsalliance/verible/releases/download/v0.0-2776-gbaf0efe9/verible-v0.0-2776-gbaf0efe9-Ubuntu-22.04-jammy-x86_64.tar.gz \
 # Install SystemVerilog formatter
 RUN mkdir -p /srcPkgs \
     && cd /srcPkgs \
-    && wget https://github.com/chipsalliance/verible/releases/download/v0.0-2776-gbaf0efe9/verible-v0.0-2776-gbaf0efe9-Ubuntu-22.04-jammy-x86_64.tar.gz \
+    && wget https://github.com/chipsalliance/verible/releases/download/v0.0-4007-g98bdb38a/verible-v0.0-4007-g98bdb38a-linux-static-x86_64.tar.gz \
     && mkdir -p verible \
     && tar xzvf verible-*-x86_64.tar.gz -C verible --strip-components 1
 # Install verilator from source - version v5.020
