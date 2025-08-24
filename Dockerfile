@@ -132,3 +132,5 @@ RUN printf "\
 \nautocmd BufWritePost *.v  silent! !verible-verilog-format --inplace <afile> \
 \nautocmd BufWritePost * redraw! \
 \n" >> /root/.vimrc
+
+
